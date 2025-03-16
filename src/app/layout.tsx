@@ -7,6 +7,7 @@ import Footer from '@/components/shared/footer';
 import { CartProvider } from '@/context/CartContext';
 import { Toaster } from '@/components/ui/toaster';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { ProductsProvider } from '@/context/ProductsContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,13 +30,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <CartProvider>
-            <Header />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
-            <Toaster />
-            <WhatsAppButton />
-          </CartProvider>
+          <ProductsProvider>
+            <CartProvider>
+              <Header />
+              <main className="min-h-screen">{children}</main>
+              <Footer />
+              <Toaster />
+              <WhatsAppButton />
+            </CartProvider>
+          </ProductsProvider>
         </ThemeProvider>
       </body>
     </html>
