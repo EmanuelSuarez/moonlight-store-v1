@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { products } from '../productList';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const productId = parseInt(params.id);
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const productId = parseInt(params.id, 10);
   const product = products.find((product) => product.id === productId);
 
   if (!product) {
@@ -11,4 +11,3 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
   return NextResponse.json(product);
 }
-
