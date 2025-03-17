@@ -46,6 +46,7 @@ export default function AddToCartButton({
       className={className} 
       onClick={handleAddToCart}
       disabled={isAdding}
+      variant="outline"
     >
       {showIcon && <ShoppingCart className="mr-2 h-4 w-4" />}
       {isAdding ? 'Añadiendo...' : 'Añadir al Carrito'}

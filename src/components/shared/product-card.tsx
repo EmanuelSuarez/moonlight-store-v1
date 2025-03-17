@@ -22,7 +22,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <CardContent className="p-6">
         <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
         <p className="text-sm font-bold">
-          <span className="mr-2 text-muted-foreground line-through">
+          <span className={`mr-2 text-muted-foreground ${product?.promoPrice && 'line-through'}`}>
             ${product.price.toFixed(2)}
           </span>
           {product.promoPrice && (

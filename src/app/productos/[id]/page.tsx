@@ -16,6 +16,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string>(product?.image || '');
+  const [selectedColor, setSelectedColor] = useState<string>('');
 
   useEffect(() => {
     async function fetchParams() {
@@ -26,7 +27,9 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           throw new Error('Failed to fetch product');
         }
         const data = await response.json();
+        setSelectedImage(data.image);
         setProduct(data);
+        setSelectedColor(data.colors[0]); // Set the initial selected color
       } catch (error) {
         console.error((error as Error).message);
       } finally {
@@ -63,7 +66,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
     return <div>Product not found</div>;
   }
 
-
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-12 md:py-24">
@@ -88,7 +90,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 {product?.images.map((image, index) => (
                   <div 
                     key={index} 
-                    className={`relative aspect-square overflow-hidden rounded-lg cursor-pointer border-2 ${image === image ? 'border-primary' : 'border-transparent'}`}
+                    className={`relative aspect-square overflow-hidden rounded-lg cursor-pointer border-2 ${selectedImage === image ? 'border-primary' : 'border-transparent'}`}
                     onClick={() => setSelectedImage(image)}
                   >
                     <Image
@@ -151,21 +153,41 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                     )}
                   </div>
                 </div>
+
+                {/* color */}
+                <div className="mb-6">
+                  <label htmlFor="color" className="block text-sm font-medium text-black">
+                    Color:
+                  </label>
+                  <select
+                    id="color"
+                    name="color"
+                    value={selectedColor}
+                    onChange={(e) => setSelectedColor(e.target.value)}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-black border-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    {product.colors.map((color, index) => (
+                      <option key={index} value={color}>
+                        {color}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-6">
                   {product && (
                     <AddToCartButton 
                       product={product} 
-                      quantity={quantity} 
+                      quantity={quantity}
                       className="flex-1"
                     />
                   )}
-                  <Button variant="outline" size="lg" onClick={handleAddToFavorites}>
+                  {/* <Button variant="outline" size="lg" onClick={handleAddToFavorites}>
                     <Heart className="mr-2 h-4 w-4" /> Favorito
                   </Button>
                   <Button variant="outline" size="icon">
                     <Share2 className="h-4 w-4" />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
               
@@ -180,15 +202,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 <div className="flex items-center">
                   <RotateCcw className="h-5 w-5 mr-3 text-muted-foreground" />
                   <div>
-                    <p className="text-sm font-medium">Devoluciones Gratuitas</p>
-                    <p className="text-xs text-muted-foreground">Hasta 30 días después de la compra</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <Shield className="h-5 w-5 mr-3 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm font-medium">Garantía de 2 Años</p>
-                    <p className="text-xs text-muted-foreground">Contra defectos de fabricación</p>
+                    <p className="text-sm font-medium">Te devolvemos tu dinero</p>
+                    <p className="text-xs text-muted-foreground">Hasta 10 días después de la compra</p>
                   </div>
                 </div>
               </div>
