@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { products } from '../productList';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const productId = parseInt(params.id);
+export async function GET(request: Request, { params }: { params: { id: number } }) {
+  const productId = params.id;
   const product = products.find((product) => product.id === productId);
 
   if (!product) {
